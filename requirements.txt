@@ -1,0 +1,4 @@
+agent-framework-devui>=1.0.0b0
+agent-framework-openai>=1.7.0
+azure-monitor-opentelemetry>=1.0.0
+python-dotenv>=1.0.0
