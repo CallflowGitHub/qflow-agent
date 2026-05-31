@@ -7,7 +7,7 @@ from azure.monitor.opentelemetry import configure_azure_monitor
 from agent_framework import create_harness_agent
 from agent_framework.openai import OpenAIChatClient
 from agent_framework_devui import serve
-from openai import AsyncOpenAI
+from openai import AsyncAzureOpenAI
 
 # Reads the .env file and injects its values into os.environ,
 # so the os.environ calls below will find your endpoint, key, and model name.
@@ -20,17 +20,16 @@ APPINSIGHTS_CONNECTION_STRING = os.environ["APPLICATIONINSIGHTS_CONNECTION_STRIN
 
 
 def _build_chat_client() -> OpenAIChatClient:
-    # Claude (and other non-OpenAI models) in Azure AI Foundry are served through
-    # the unified /models endpoint, which is OpenAI-compatible but uses a different
-    # URL path than the Azure OpenAI-specific /openai/deployments/{model}/... route.
-    if "claude" in MODEL.lower():
-        async_client = AsyncOpenAI(
-            api_key=KEY,
-            base_url=f"{ENDPOINT.rstrip('/')}/models",
-        )
-        return OpenAIChatClient(MODEL, async_client=async_client)
-    # Standard Azure OpenAI models (gpt-4o, o1, etc.) use the azure_endpoint routing.
-    return OpenAIChatClient(MODEL, api_key=KEY, azure_endpoint=ENDPOINT)
+    # All models (Claude included) on the cognitiveservices.azure.com endpoint use
+    # the Azure OpenAI-compatible route, which requires api-version. AsyncAzureOpenAI
+    # handles that automatically; the plain AsyncOpenAI client does not.
+    async_client = AsyncAzureOpenAI(
+        api_key=KEY,
+        azure_endpoint=ENDPOINT,
+        azure_deployment=MODEL,
+        api_version="2025-03-01-preview",
+    )
+    return OpenAIChatClient(MODEL, async_client=async_client)
 
 
 def main() -> None:
