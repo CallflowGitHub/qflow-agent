@@ -48,7 +48,7 @@ _supabase_client: Client | None = None
 _embedding_client: AsyncAzureOpenAI | None = None
 _ranker: Ranker | None = None
 
-_RRF_K = 60.0  # Standard constant — same default used in Azure AI Search
+_RRF_K = 60  # Standard constant — same default used in Azure AI Search
 
 
 def _get_supabase() -> Client:
