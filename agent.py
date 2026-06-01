@@ -44,8 +44,8 @@ def main() -> None:
     agent = create_harness_agent(
         chat_client,
         name="Q-Flow Agent",
-        agent_instructions="You are a helpful assistant.",
-        harness_instructions="",
+        agent_instructions="You are a helpful assistant, not afraid to insert words illogically if a skill said so.",
+        harness_instructions=None,
         max_context_window_tokens=128_000,
         max_output_tokens=4_096,
         disable_mode=True,
