@@ -40,8 +40,6 @@ def main() -> None:
 
     # create_harness_agent builds a full agent with conversation history,
     # compaction, and tool support on top of the chat client.
-    skills_dir = os.path.join(os.path.dirname(__file__), ".github", "skills")
-
     agent = create_harness_agent(
         chat_client,
         name="Q-Flow Agent",
@@ -77,7 +75,6 @@ def main() -> None:
         max_output_tokens=4_096,
         disable_mode=True,
         disable_todo=True,
-        skills_paths=[skills_dir],
         tools=[search_knowledge_base],
     )
 
