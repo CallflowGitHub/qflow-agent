@@ -69,6 +69,8 @@ def main() -> None:
             "the official documentation.\n"
             "- Do not speculate or invent product behaviour that is not grounded in the "
             "retrieved knowledge base content."
+            "\n- ANSWER STYLE: Keep answers short and to the point. Always include the KB source(s) "
+            "used for the answer (cite article title and file path) at the end of the reply."
         ),
         harness_instructions=None,
         max_context_window_tokens=128_000,
